@@ -1,0 +1,169 @@
+	Instructions:
+
+	1- Accessing Business Central:
+	log into https://secure-rhh-ace-businesscentral.bpsaz.ldcloud.com.au/
+	username: rhpamAdmin
+	password: rhpamAdmin!23
+
+
+	Open Space "Leonardo"
+	Open Project "rhh-ace"
+	To view the process map open "passengerEvents.bpmn2"
+
+
+	2- Preparing to run the Demo:
+
+	Navigate to https://secure-rhh-ace-node-dashboard-client-rhh-ace.bpsaz.ldcloud.com.au/ to view the Flight departures board.
+
+	Option 1: 
+	Use the Insomnia REST client (https://insomnia.rest/).
+	Import workspace from rhh-ace-pam/src/test/resources/test-payloads/RH-Hackathon-ACE-Test-Scenarios.json
+
+	Option 2:
+	Use the pre-prepared curl statements located under rhh-ace-pam\src\test\resources\test-payloads\curls
+
+
+	3- Run Demo scenarios:
+
+	Required Inputs:
+	Flight object
+	MMSContent object - contains the QR code
+	Event object
+	A Mobile number (overrides the existing frequent flyer details)
+		"mobileNumber": "0000000000",
+	NOTE: if you wish to recieve mobile SMS text notifications you must provide a valid phone number.
+
+	Scenario 1: Gate Change
+
+	The process is triggered by an event that specifies there has been a gate change.
+
+	The payload includes the following event object:
+		"event": {
+			"au.com.leonardo.poc.sms_test.Event": {
+				"attributeName": "GateNumber",
+				"hasChanged": true,
+				"lastValue": "11",
+				"currentValue": "17A"
+			}
+		}
+
+	Expected Outcome:
+	A text message is sent to the mobile number specified in the frequent flyer's preferred language (french).
+	The departure board is updated with the new gate number and status is changed to "NEW GATE"
+
+
+	Scenario 2: Time Delay 3hrs
+
+	The process is triggered by an event that specifies there has been a change in departure time.
+
+	The payload includes the following event object:
+		"event": {
+			"au.com.leonardo.poc.sms_test.Event": {
+			"au.com.leonardo.poc.sms_test.Event": {
+				"attributeName": "EstDepartureTime",
+				"hasChanged": true,
+				"lastValue": "2019-10-31 12:50:00",
+				"currentValue": "2019-10-31 15:50:00"
+			}
+		}
+
+	Expected Outcome:
+	A text message is sent to the mobile number specified in the frequent flyer's preferred language.
+	An MMS is sent with a food voucher for SILVER frequent flyers
+	The departure board is updated with the new estimated departure time and status is changed to "DELAYED"
+
+	Scenario 3: Time Delay 5hrs
+
+	The process is triggered by an event that specifies there has been a change in departure time.
+
+	The payload includes the following event object:
+		"event": {
+			"au.com.leonardo.poc.sms_test.Event": {
+			"au.com.leonardo.poc.sms_test.Event": {
+				"attributeName": "EstDepartureTime",
+				"hasChanged": true,
+				"lastValue": "2019-10-31 12:50:00",
+				"currentValue": "2019-10-31 15:50:00"
+			}
+		}
+
+	Expected Outcome:
+	A text message is sent to the mobile number specified in the frequent flyer's preferred language.
+	An MMS is sent to SILVER frequent flyers with a invitation to the lounge.
+	The departure board is updated with the new estimated departure time and status is changed to "DELAYED"
+
+
+	Scenario 4: Departure is Near
+
+	The process is triggered by an Departure is near event.
+
+	The payload includes the following event object:
+		"event": {
+			"au.com.leonardo.poc.sms_test.Event": {
+			"au.com.leonardo.poc.sms_test.Event": {
+				"attributeName": "DepartureNear",
+				"hasChanged": true,
+				"lastValue": "false",
+				"currentValue": "true"
+			}
+		}
+
+	Expected Outcome:
+	A text message is sent to the mobile number specified in the frequent flyer's preferred language.
+	A message is sent to PLATINUM frequent flyers booked in economy offerring a free upgrade to Business Class.
+	A message is sent to GOLD frequent flyers booked in economy offerring a 50% discount when upgrading to Business Class.
+
+
+	4 - Instructions for installing the DEMO locally:
+	(NOTE: 3Scale API management is not available in this option)
+
+
+	Node Applications (requires Node.js installed):
+	Clone the node application repositories.
+	Navigate to: rhh-ace-node-dashboard/client/
+			create a .env file with the following:
+			REACT_APP_APIURL=http://localhost:3001 note: this is the server application url
+
+	run: npm start, note the ports associated with each application.
+
+	RHPAM Process
+
+	- Clone the dependencies repository:
+		https://github.com/ldcloud/jbpm-work-items/tree/properties-workitem
+
+	- run mvn clean deploy to add properties.jar to your maven repository. (if you are using a remote repository you may need to edit the pom.xml file).
+		You may also upload the .jar file into your remote manually.
+
+	- Import the rhh-ace project into business-central.
+
+	- Copy the src/main/resources/config/ace.properties file to a known location.
+		Replace the properties:
+			rest.url.frequent-flyers: the url for the "getFFdetails" node.js application. 
+			rest.url.email: the url for the "node-connect" node.js application.
+			rest.url.push = the url for the "node-connect" node.js application.
+			rest.url.departure-board = the url for the "node-dashboard" server application.
+			oauth.client_id = your Telstra API id
+			oauth.client_secret = your Telstra API secret4
+		NOTE: ifusing a different mobile provider also replace sms/mms/oauth APIs specific to your provider.
+
+	- Open the /src/main/resources/kie-deployment-descriptor.xml file located in the META-INF folder.
+		Replace the placeholder variables:
+			GOOGLE_KEY: your google API key to enable translation
+			GMAIL_ADDRESS: your registered email address
+			GMAIL_PASSWORD: your registered email password
+			PROPERTIES_FILE_LOCATION: the location where you stored ace.properties
+
+	- Build & Deploy rhh-ace.
+
+	- Run "Direct Query" Scenarios making sure to change the follwoing:
+		kie-server url
+		kie-server username
+		kie-server password
+		
+		Use the payloads located under rhh-ace-pam/src/test/resources/test-payloads/simple-payloads
+		
+
+
+
+
+

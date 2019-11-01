@@ -1,0 +1,28 @@
+[
+        [
+            "name" : "GoogleTranslate",
+            "displayName" : "GoogleTranslate",
+            "category" : "google-translate-workitem",
+            "description" : "",
+            "defaultHandler" : "mvel: new org.jbpm.process.workitem.google.translate.TranslateWorkitemHandler(\"apiKey\")",
+            "documentation" : "google-translate-workitem/index.html",
+
+            "parameters" : [
+                                "TargetLang" : new StringDataType()
+                ,"ToTranslate" : new StringDataType()
+                ,"SourceLang" : new StringDataType()
+
+            ],
+            "results" : [
+                                "Translation" : new StringDataType()
+
+            ],
+            "mavenDependencies" : [
+                                 "org.jbpm.contrib:google-translate-workitem:7.28.0.FINAL"
+
+            ],
+            "icon" : "GoogleTranslate.png"
+
+        ]
+
+]

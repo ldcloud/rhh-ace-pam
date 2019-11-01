@@ -1,0 +1,164 @@
+package au.com.leonardo.poc.sms_test;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
+
+declare Delay
+    hours: int
+end
+
+rule "Gate Change"
+ruleflow-group "Event Notification Rules"
+when
+    $flight: Flight()
+    $evt: Event(attributeName == "GateNumber",hasChanged == true)
+    $msg: Message(messageText == null)
+    $ffd: FrequentFlyerDetails()
+then
+    $msg.setMessageText("Hi "+$ffd.getFirstName()+", please note that the gate for ACE Airlines flight "+$flight.getFlightNumber()+" has been changed to Gate "+$evt.getCurrentValue()+".");
+    update($msg);
+    
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+    System.out.println($msg.getMessageText());
+end
+
+
+rule "Determine Time Delay"
+ruleflow-group "Event Notification Rules"
+no-loop true
+when
+    not Delay()
+    $evt: Event(attributeName == "EstDepartureTime", hasChanged ==true)
+then
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    DateTime lastD = new DateTime(sdf.parse($evt.getLastValue()));
+    DateTime newD = new DateTime(sdf.parse($evt.getCurrentValue()));
+    Delay del = new Delay();
+    del.setHours(Hours.hoursBetween(lastD,newD).getHours());
+    insert(del);
+    System.out.println("Hours delayed: "+del.getHours());
+    
+end
+
+rule "Delay between 2 and 4 hrs - Non Silver FFs"
+ruleflow-group "Event Notification Rules"
+when  
+    Delay($h: hours >= 2 && <4)
+    $evt: Event(attributeName == "EstDepartureTime", hasChanged ==true)
+    $flight: Flight()
+    $msg: Message(messageText == null)
+    $ffd: FrequentFlyerDetails(frequentFlyerLevel != "Silver")
+then
+    $msg.setMessageText("Hi "+$ffd.getFirstName()+", we apologize that your ACE Airlines flight "+$flight.getFlightNumber()+" has been delayed for "+$h+" hours, your new departure time is: "+$evt.getCurrentValue()+".");
+    update($msg);
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+    System.out.println($msg.getMessageText());
+end
+
+
+rule "Delay between 2 and 4 hrs - Silver FFs"
+ruleflow-group "Event Notification Rules"
+when  
+    Delay($h: hours >= 2 && < 4)
+    $evt: Event(attributeName == "EstDepartureTime", hasChanged ==true)
+    $flight: Flight()
+    $msg: Message(messageText == null)
+    $ffd: FrequentFlyerDetails(frequentFlyerLevel == "Silver")
+then
+    $msg.setMessageText("Hi "+$ffd.getFirstName()+", we apologize that your ACE Airlines flight "
+        +$flight.getFlightNumber()+" has been delayed for "+$h+" hours, your new departure time is: "+$evt.getCurrentValue()
+        +". We have sent you a food voucher to use at the food court.");
+    $msg.setIsMMS(true);
+    $msg.setSubjectText("Food Voucher");
+    update($msg);
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+    System.out.println($msg.getMessageText());
+
+end
+
+rule "Delay > 4 hrs - Plat, Gold, Club FFs"
+ruleflow-group "Event Notification Rules"
+salience 1
+when  
+    Delay($h: hours >= 4)
+    $evt: Event(attributeName == "EstDepartureTime", hasChanged ==true)
+    $flight: Flight()
+    $msg: Message(messageText == null)
+    $ffd: FrequentFlyerDetails(frequentFlyerLevel in ("Platinum","ClubMember","Gold"))
+then
+    $msg.setMessageText("Hi "+$ffd.getFirstName()+", we apologize that your ACE Airlines flight "
+        +$flight.getFlightNumber()+" has been delayed for "+$h+" hours, your new departure time is: "+$evt.getCurrentValue()
+        +". We welcome you to keep enjoying the comforts of the lounge.");
+    update($msg);
+     System.out.println("Rule Fired: "+kcontext.getRule().getName());
+     System.out.println($msg.getMessageText());
+end
+
+
+
+rule "Delay > 4 hrs - Silver FFs"
+ruleflow-group "Event Notification Rules"
+when  
+    Delay($h: hours >= 4)
+    $evt: Event(attributeName == "EstDepartureTime", hasChanged ==true)
+    $flight: Flight()
+    $msg: Message(messageText == null)
+    $ffd: FrequentFlyerDetails(frequentFlyerLevel == "Silver")
+then
+    $msg.setMessageText("Hi "+$ffd.getFirstName()+", we apologize that your ACE Airlines flight "
+        +$flight.getFlightNumber()+" has been delayed for "+$h+" hours, your new departure time is: "+$evt.getCurrentValue()
+        +". We welcome you to enjoy the comforts of the lounge with this pass.");
+    $msg.setIsMMS(true);
+    $msg.setSubjectText("Lounge Pass");
+    update($msg);
+     System.out.println("Rule Fired: "+kcontext.getRule().getName());
+     System.out.println($msg.getMessageText());
+end
+
+
+rule "Departure Near - Platinum"
+ruleflow-group "Event Notification Rules"
+dialect "mvel"
+when  
+    $evt: Event(attributeName == "DepartureNear", hasChanged ==true)
+    $msg: Message(messageText == null)
+    $ffd: FrequentFlyerDetails(frequentFlyerLevel == "Platinum", $ffnum : frequentFlyerNo)
+    $flight: Flight( $tf : thisFlight , $air: aircraft )
+    eval(($air.passengerCapacity_Busi - $tf.passengerSouls_Busi ) >= 5)
+    Manifest (fareclass == "economy", frequentFlyer == $ffnum) from $tf.manifest
+      
+then
+    $msg.setMessageText("Congratulations "+$ffd.getFirstName()+", you have received a FREE upgrade to Business Class for flight "
+        +$flight.getFlightNumber()+" to show our appreciation for choosing ACE Airlines as your preferred airline.");
+    update($msg);
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+    System.out.println($msg.getMessageText());
+end
+
+rule "Departure Near - Gold"
+ruleflow-group "Event Notification Rules"
+dialect "mvel"
+when  
+    $evt: Event(attributeName == "DepartureNear", hasChanged ==true)
+    $msg: Message(messageText == null)
+    $ffd: FrequentFlyerDetails(frequentFlyerLevel == "Gold", $ffnum : frequentFlyerNo)
+    $flight: Flight( $tf : thisFlight , $air: aircraft )
+    eval(($air.passengerCapacity_Busi - $tf.passengerSouls_Busi ) >= 5)
+    Manifest (fareclass == "economy", frequentFlyer == $ffnum) from $tf.manifest
+      
+then
+    $msg.setMessageText("Congratulations "+$ffd.getFirstName()+", ACE Airlines would like to offer you a 50% discount when you upgrade to Business Class for flight "
+        +$flight.getFlightNumber()+" to show our appreciation for choosing us as your preferred airline.");
+    update($msg);
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+    System.out.println($msg.getMessageText());
+end
+
+
+
+
+
+
+
+

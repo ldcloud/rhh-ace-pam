@@ -1,0 +1,26 @@
+[
+        [
+            "name" : "GoogleDetectLanguage",
+            "displayName" : "GoogleDetectLanguage",
+            "category" : "google-translate-workitem",
+            "description" : "",
+            "defaultHandler" : "mvel: new org.jbpm.process.workitem.google.translate.DetectLanguageWorkitemHandler(\"apiKey\")",
+            "documentation" : "google-translate-workitem/index.html",
+
+            "parameters" : [
+                                "ToDetectText" : new StringDataType()
+
+            ],
+            "results" : [
+                                "DetectedLanguage" : new StringDataType()
+
+            ],
+            "mavenDependencies" : [
+                                 "org.jbpm.contrib:google-translate-workitem:7.28.0.FINAL"
+
+            ],
+            "icon" : "GoogleDetectLanguage.png"
+
+        ]
+
+]

@@ -1,0 +1,9 @@
+ACE - Airline Customer Experience
+=======================
+
+To install this demo of Red Hat Process Automation Manager you need to do two things beforehand.
+
+1. The demo uses the Telstra SMS API to send text messages, for which you need a client_id and a client_secret. You can get these by creating a (free) developer account at https://dev.telstra.com/. The REST task called "Get Auth Token" requires a 'Content" value similar to this: client_id=12345&client_secret=67890&grant_type=client_credentials&scope=NSMS where the client_id value replaces 12345 and the client_secret value replaces 67890.
+2. The Google Translate Work item Handler requires a key as well. This needs to be placed in the MVEL statement defining the default handler that is in project settings for Deployments / Work item Hanlders: "new org.jbpm.process.workitem.google.translate.TranslateWorkitemHandler("XY5ezgm8ihrOO-AIzaSy9fx0jkJcJHTA-j-zQ8Ao"). This requires you to have a Google account. More information is available here: https://cloud.google.com/translate/
+
+To run the demo you need to send a JSON payload to the RHPAM kie-server API. We have included sample Insomnia requests and cURL statements. Insomnia is a REST client that is very similar to Postman. It is available for Windows, MacOS, and Linux, and can be downloaded from https://insomnia.rest/download/. Note that you may need to edit some of the Insomnia environment variables to make the requests work if your URL for the RHPAM kie-server is different to the ones we have used. Likewise you may need to change the user name and password used for authorisation.

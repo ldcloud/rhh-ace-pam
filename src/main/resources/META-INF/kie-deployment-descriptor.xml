@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<deployment-descriptor xsi:schemaLocation="http://www.jboss.org/jbpm deployment-descriptor.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <persistence-unit>org.jbpm.domain</persistence-unit>
+    <audit-persistence-unit>org.jbpm.domain</audit-persistence-unit>
+    <audit-mode>JPA</audit-mode>
+    <persistence-mode>JPA</persistence-mode>
+    <runtime-strategy>SINGLETON</runtime-strategy>
+    <marshalling-strategies/>
+    <event-listeners/>
+    <task-event-listeners/>
+    <globals/>
+    <work-item-handlers>
+        <work-item-handler>
+            <resolver>mvel</resolver>
+            <identifier>new org.jbpm.process.workitem.google.translate.DetectLanguageWorkitemHandler("GOOGLE_KEY")</identifier>
+            <parameters/>
+            <name>GoogleDetectLanguage</name>
+        </work-item-handler>
+        <work-item-handler>
+            <resolver>mvel</resolver>
+            <identifier>new org.jbpm.process.workitem.google.translate.TranslateWorkitemHandler("GOOGLE_KEY")</identifier>
+            <parameters/>
+            <name>GoogleTranslate</name>
+        </work-item-handler>
+        <work-item-handler>
+            <resolver>mvel</resolver>
+            <identifier>new org.jbpm.process.workitem.email.EmailWorkItemHandler("smtp.gmail.com", "587", "GMAIL_ADDRESS", "GMAIL_PASSWORD")</identifier>
+            <parameters/>
+            <name>Email</name>
+        </work-item-handler>
+        <work-item-handler>
+            <resolver>mvel</resolver>
+            <identifier>new org.jbpm.process.workitem.rest.RESTWorkItemHandler(classLoader)</identifier>
+            <parameters/>
+            <name>Rest</name>
+        </work-item-handler>
+        <work-item-handler>
+            <resolver>reflection</resolver>
+            <identifier>org.jbpm.process.workitem.properties.PropertiesWorkItemHandler</identifier>
+            <parameters>
+                <parameter xsi:type="objectModel">
+                    <resolver>reflection</resolver>
+                    <identifier>java.lang.String</identifier>
+                    <parameters>
+                        <parameter xsi:type="xs:string" xmlns:xs="http://www.w3.org/2001/XMLSchema">PROPERTIES_FILE_LOCATION</parameter>
+                    </parameters>
+                </parameter>
+            </parameters>
+            <name>Properties</name>
+        </work-item-handler>
+    </work-item-handlers>
+    <environment-entries/>
+    <configurations/>
+    <required-roles/>
+    <remoteable-classes/>
+    <limit-serialization-classes>true</limit-serialization-classes>
+</deployment-descriptor>

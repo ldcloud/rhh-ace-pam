@@ -1,0 +1,30 @@
+[
+        [
+            "name" : "GoogleSendMail",
+            "displayName" : "GoogleSendMail",
+            "category" : "google-mail-workitem",
+            "description" : "",
+            "defaultHandler" : "mvel: new org.jbpm.process.workitem.google.mail.SendMailWorkitemHandler(\"appName\", \"clentSecret\")",
+            "documentation" : "google-mail-workitem/index.html",
+
+            "parameters" : [
+                                "BodyText" : new StringDataType()
+                ,"Attachment" : new StringDataType()
+                ,"To" : new StringDataType()
+                ,"From" : new StringDataType()
+                ,"Subject" : new StringDataType()
+
+            ],
+            "results" : [
+                                "Message" : new StringDataType()
+
+            ],
+            "mavenDependencies" : [
+                                 "org.jbpm.contrib:google-mail-workitem:7.27.0.Final"
+
+            ],
+            "icon" : "GoogleSendMail.png"
+
+        ]
+
+]

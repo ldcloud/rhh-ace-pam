@@ -1,0 +1,52 @@
+package au.com.leonardo.poc.sms_test;
+
+rule "Retract Delay"
+ruleflow-group "Event Notification Retract"
+salience -100
+when 
+$d: Delay()
+then
+retract($d);
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+end
+
+rule "Retract Flight"
+ruleflow-group "Event Notification Retract"
+salience -100
+when 
+$f: Flight()
+then
+retract($f);
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+end
+
+rule "Retract Message"
+ruleflow-group "Event Notification Retract2"
+salience -100
+when 
+$m: Message()
+then
+retract($m);
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+end
+
+rule "Retract Event"
+ruleflow-group "Event Notification Retract"
+salience -100
+when 
+$e: Event()
+then
+retract($e);
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+end
+
+rule "Retract FrequentFlyerDetails"
+ruleflow-group "Event Notification Retract"
+salience -100
+when 
+$ffd: FrequentFlyerDetails()
+   
+then
+retract($ffd);
+ System.out.println("Rule Fired: "+kcontext.getRule().getName());
+end

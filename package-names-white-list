@@ -1,0 +1,4 @@
+au.com.leonardo.process.workitem.properties
+au.com.leonardo.poc.**
+org.jbpm.process.workitem.google.translate
+org.jbpm.workitem.google.mail
