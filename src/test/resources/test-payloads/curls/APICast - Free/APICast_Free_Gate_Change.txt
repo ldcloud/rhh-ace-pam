@@ -1,7 +1,7 @@
 curl --request POST \
-  --url https://secure-rhh-ace-rhpam741-exec-kieserver.bpsaz.ldcloud.com.au/services/rest/server/containers/rhh-ace/processes/passengerEvents/instances \
-  --header 'authorization: Basic cmhwYW1BZG1pbjpyaHBhbUFkbWluITIz' \
-  --header 'content-type: application/json' \
+  --url https://apicast-secure-rhh-ace.bpsaz.ldcloud.com.au/flightEvent \
+  --header 'user-key: 43f11940fed42094c23382dcdfbc19f1' \
+  --cookie 02418cde0172746b1e6d037e2421a015=2a911fd48ef17c889942f72c97e2dd6d \
   --data '{
 	"flight": {
 		"au.com.leonardo.poc.sms_test.Flight": {
@@ -29,10 +29,42 @@ curl --request POST \
 				"passengerCapacity_Busi": 12
 			},
 			"thisFlight": {
+				"gate":"11",
 				"passengerSouls_Econ": 290,
 				"passengerSouls_Busi": 7,
-				"gate":"11",
 				"manifest": [
+										{
+						"bookingCode": "XYA43R",
+						"firstName": "phil",
+						"lastName": "ogilvie",
+						"frequentFlyer": 1928765,
+						"fareclass": "economy",
+						"seatAllocation": "7C"
+					},
+					{
+						"bookingCode": "XY634K",
+						"firstName": "alex",
+						"lastName": "smith",
+						"frequentFlyer": 239867401,
+						"fareclass": "business",
+						"seatAllocation": "1B"
+					},
+					{
+						"bookingCode": "XY76S1",
+						"firstName": "lauren",
+						"lastName": "piper",
+						"frequentFlyer": null,
+						"fareclass": "economy",
+						"seatAllocation": "27D"
+					},
+					{
+						"bookingCode": "XY3BG8",
+						"firstName": "alice",
+						"lastName": "white",
+						"frequentFlyer": 987164327,
+						"fareclass": "economy",
+						"seatAllocation": "7A"
+					},
 					{
 						"bookingCode": "XY1P08",
 						"firstName": "laura",
@@ -40,22 +72,6 @@ curl --request POST \
 						"frequentFlyer": 211843921,
 						"fareclass": "economy",
 						"seatAllocation": "30F"
-					},
-								{
-						"bookingCode": "XF238J",
-						"firstName": "andre",
-						"lastName": "mcguire",
-						"frequentFlyer": 1343767,
-						"fareclass": "economy",
-						"seatAllocation": "12C"
-					},
-					{
-						"bookingCode": "XYA43R",
-						"firstName": "phil",
-						"lastName": "ogilvie",
-						"frequentFlyer": 1928765,
-						"fareclass": "economy",
-						"seatAllocation": "7C"
 					}
 				]
 			}
@@ -63,13 +79,13 @@ curl --request POST \
 	},
 	"event": {
 		"au.com.leonardo.poc.sms_test.Event": {
-			"attributeName": "DepartureNear",
+			"attributeName": "GateNumber",
 			"hasChanged": true,
-			"lastValue": "false",
-			"currentValue": "true"
+			"lastValue": "11",
+			"currentValue": "17A"
 		}
 	},
-	"mobileNumber": "0450100890",
+	"mobileNumber": "0000000000",
 	"MMSContent": {
 		"au.com.leonardo.poc.sms_test.MMSContent": {
 			"type": "image/gif",

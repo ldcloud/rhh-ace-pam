@@ -31,7 +31,7 @@
 	Event object
 	A Mobile number (overrides the existing frequent flyer details)
 		"mobileNumber": "0000000000",
-	NOTE: if you wish to recieve mobile SMS text notifications you must provide a valid phone number.
+	NOTE: if you wish to receive mobile SMS text notifications you must provide a valid phone number.
 
 	Scenario 1: Gate Change
 
@@ -48,8 +48,9 @@
 		}
 
 	Expected Outcome:
-	A text message is sent to the mobile number specified in the frequent flyer's preferred language (french).
+	A text message is sent to the mobile number specified in the frequent flyer's preferred language (German).
 	The departure board is updated with the new gate number and status is changed to "NEW GATE"
+	If there is a passenger in the manifest with a requiresAssistance flag, a message will be sent to internal ACE staff to assist in transporting the passenger to the new Gate.
 
 
 	Scenario 2: Time Delay 3hrs
@@ -100,7 +101,6 @@
 	The payload includes the following event object:
 		"event": {
 			"au.com.leonardo.poc.sms_test.Event": {
-			"au.com.leonardo.poc.sms_test.Event": {
 				"attributeName": "DepartureNear",
 				"hasChanged": true,
 				"lastValue": "false",
@@ -113,6 +113,26 @@
 	A message is sent to PLATINUM frequent flyers booked in economy offerring a free upgrade to Business Class.
 	A message is sent to GOLD frequent flyers booked in economy offerring a 50% discount when upgrading to Business Class.
 
+	
+			
+	Scenario 5: CodeSharePromotions
+	
+	The process is triggered by an Departure is near event.
+	
+	The payload includes the following event object:
+	"event": {
+		"au.com.leonardo.poc.sms_test.Event": {
+			"attributeName": "codeSharePromotion",
+			"hasChanged": true,
+			"lastValue": "",
+			"currentValue": "",
+			"originator":"XYZ"
+		}
+
+	Expected Outcome:
+	If a passenger does not have a "hasCheckedBaggage" flag set, a text message is sent to the mobile number specified in the frequent flyer's preferred language asking if they wish to be informed of Baggage options.
+	If the customer responds to the text message with YES, or the equivalent in their language of choice, a new message is sent with baggage price information depending on the event originator and the booking class of the passenger.
+	
 
 	4 - Instructions for installing the DEMO locally:
 	(NOTE: 3Scale API management is not available in this option)
@@ -161,7 +181,6 @@
 		kie-server password
 		
 		Use the payloads located under rhh-ace-pam/src/test/resources/test-payloads/simple-payloads
-		
 
 
 

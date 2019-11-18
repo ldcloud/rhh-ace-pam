@@ -11,6 +11,7 @@ public class Message implements java.io.Serializable {
 	private java.lang.String messageText;
 	private java.lang.String subjectText;
 	private java.lang.Boolean isMMS = false;
+	private java.lang.Boolean isReplyable = false;
 
 	public Message() {
 	}
@@ -39,11 +40,20 @@ public class Message implements java.io.Serializable {
 		this.isMMS = isMMS;
 	}
 
+	public java.lang.Boolean getIsReplyable() {
+		return this.isReplyable;
+	}
+
+	public void setIsReplyable(java.lang.Boolean isReplyable) {
+		this.isReplyable = isReplyable;
+	}
+
 	public Message(java.lang.String messageText, java.lang.String subjectText,
-			java.lang.Boolean isMMS) {
+			java.lang.Boolean isMMS, java.lang.Boolean isReplyable) {
 		this.messageText = messageText;
 		this.subjectText = subjectText;
 		this.isMMS = isMMS;
+		this.isReplyable = isReplyable;
 	}
 
 }

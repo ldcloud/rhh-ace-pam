@@ -9,7 +9,7 @@ declare Delay
 end
 
 rule "Gate Change"
-ruleflow-group "Event Notification Rules"
+ruleflow-group "Passenger Notification Rules"
 when
     $flight: Flight()
     $evt: Event(attributeName == "GateNumber",hasChanged == true)
@@ -25,7 +25,7 @@ end
 
 
 rule "Determine Time Delay"
-ruleflow-group "Event Notification Rules"
+ruleflow-group "Passenger Notification Rules"
 no-loop true
 when
     not Delay()
@@ -42,7 +42,7 @@ then
 end
 
 rule "Delay between 2 and 4 hrs - Non Silver FFs"
-ruleflow-group "Event Notification Rules"
+ruleflow-group "Passenger Notification Rules"
 when  
     Delay($h: hours >= 2 && <4)
     $evt: Event(attributeName == "EstDepartureTime", hasChanged ==true)
@@ -58,7 +58,7 @@ end
 
 
 rule "Delay between 2 and 4 hrs - Silver FFs"
-ruleflow-group "Event Notification Rules"
+ruleflow-group "Passenger Notification Rules"
 when  
     Delay($h: hours >= 2 && < 4)
     $evt: Event(attributeName == "EstDepartureTime", hasChanged ==true)
@@ -78,7 +78,7 @@ then
 end
 
 rule "Delay > 4 hrs - Plat, Gold, Club FFs"
-ruleflow-group "Event Notification Rules"
+ruleflow-group "Passenger Notification Rules"
 salience 1
 when  
     Delay($h: hours >= 4)
@@ -98,7 +98,7 @@ end
 
 
 rule "Delay > 4 hrs - Silver FFs"
-ruleflow-group "Event Notification Rules"
+ruleflow-group "Passenger Notification Rules"
 when  
     Delay($h: hours >= 4)
     $evt: Event(attributeName == "EstDepartureTime", hasChanged ==true)
@@ -118,7 +118,7 @@ end
 
 
 rule "Departure Near - Platinum"
-ruleflow-group "Event Notification Rules"
+ruleflow-group "Passenger Notification Rules"
 dialect "mvel"
 when  
     $evt: Event(attributeName == "DepartureNear", hasChanged ==true)
@@ -137,7 +137,7 @@ then
 end
 
 rule "Departure Near - Gold"
-ruleflow-group "Event Notification Rules"
+ruleflow-group "Passenger Notification Rules"
 dialect "mvel"
 when  
     $evt: Event(attributeName == "DepartureNear", hasChanged ==true)

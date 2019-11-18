@@ -15,6 +15,10 @@ public class Manifest implements java.io.Serializable {
 	private java.lang.String fareclass;
 	private java.lang.String seatAllocation;
 
+	private java.lang.String requiresAssistance;
+
+	private java.lang.Boolean hasCheckedBaggage = false;
+
 	public Manifest() {
 	}
 
@@ -66,15 +70,35 @@ public class Manifest implements java.io.Serializable {
 		this.seatAllocation = seatAllocation;
 	}
 
+	public java.lang.String getRequiresAssistance() {
+		return this.requiresAssistance;
+	}
+
+	public void setRequiresAssistance(java.lang.String requiresAssistance) {
+		this.requiresAssistance = requiresAssistance;
+	}
+
+	public java.lang.Boolean getHasCheckedBaggage() {
+		return this.hasCheckedBaggage;
+	}
+
+	public void setHasCheckedBaggage(java.lang.Boolean hasCheckedBaggage) {
+		this.hasCheckedBaggage = hasCheckedBaggage;
+	}
+
 	public Manifest(java.lang.String bookingCode, java.lang.String firstName,
 			java.lang.String lastName, java.lang.Integer frequentFlyer,
-			java.lang.String fareclass, java.lang.String seatAllocation) {
+			java.lang.String fareclass, java.lang.String seatAllocation,
+			java.lang.String requiresAssistance,
+			java.lang.Boolean hasCheckedBaggage) {
 		this.bookingCode = bookingCode;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.frequentFlyer = frequentFlyer;
 		this.fareclass = fareclass;
 		this.seatAllocation = seatAllocation;
+		this.requiresAssistance = requiresAssistance;
+		this.hasCheckedBaggage = hasCheckedBaggage;
 	}
 
 }

@@ -1,0 +1,31 @@
+package au.com.leonardo.poc.sms_test;
+
+rule "Gate Change - Unaccompanied Minors"
+ruleflow-group "Services Notification Rules"
+when
+    $evt: Event(attributeName == "GateNumber",hasChanged == true)
+    $assist: AssistPassenger(actions == null)
+    $passenger: Manifest(requiresAssistance == "unacompaniedMinor")
+then
+    $assist.setAssistanceType("Unaccompanied Minor");
+    $assist.setActions("Please assist in transferring passenger "+$passenger.getFirstName()+" "+$passenger.getLastName()+" from Gate "+$evt.getLastValue()+" to Gate "+$evt.getCurrentValue()+".");
+    $assist.setPassengerName($passenger.getFirstName()+" "+$passenger.getLastName());
+    update($assist) 
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+    //System.out.println($assist.getAssistanceType()+" - "+$assist.getActions());
+end
+
+rule "Gate Change - Person With Disability"
+ruleflow-group "Services Notification Rules"
+when
+    $evt: Event(attributeName == "GateNumber",hasChanged == true)
+    $assist: AssistPassenger(actions == null)
+    $passenger: Manifest(requiresAssistance == "personWithDisability")
+then
+    $assist.setAssistanceType("Person with Disability");
+    $assist.setActions("Please assist in transferring passenger "+$passenger.getFirstName()+" "+$passenger.getLastName()+" from Gate "+$evt.getLastValue()+" to Gate "+$evt.getCurrentValue()+".");
+    $assist.setPassengerName($passenger.getFirstName()+" "+$passenger.getLastName());
+    update($assist) 
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+    //System.out.println($assist.getAssistanceType()+" - "+$assist.getActions());
+end

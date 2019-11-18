@@ -2,6 +2,7 @@ curl --request POST \
   --url https://apicast-secure-rhh-ace.bpsaz.ldcloud.com.au/flightEvent \
   --header 'authorization: Basic cmhwYW1BZG1pbjpyaHBhbUFkbWluITIz' \
   --header 'user-key: 43f11940fed42094c23382dcdfbc19f1' \
+  --cookie 02418cde0172746b1e6d037e2421a015=2a911fd48ef17c889942f72c97e2dd6d \
   --data '{
 	"flight": {
 		"au.com.leonardo.poc.sms_test.Flight": {
@@ -69,7 +70,7 @@ curl --request POST \
 			"currentValue": "true"
 		}
 	},
-	"mobileNumber": "0450100890",
+	"mobileNumber": "0000000000",
 	"MMSContent": {
 		"au.com.leonardo.poc.sms_test.MMSContent": {
 			"type": "image/gif",

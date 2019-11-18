@@ -8,21 +8,15 @@ public class SMSPayload implements java.io.Serializable {
 
 	static final long serialVersionUID = 1L;
 
-	private java.util.List<java.lang.String> to;
+	private String to;
 	private java.lang.String from;
 	private java.lang.Integer validity;
 	private java.lang.Boolean priority;
 	private java.lang.String body;
 
+	private java.lang.Boolean replyRequest;
+
 	public SMSPayload() {
-	}
-
-	public java.util.List<java.lang.String> getTo() {
-		return this.to;
-	}
-
-	public void setTo(java.util.List<java.lang.String> to) {
-		this.to = to;
 	}
 
 	public java.lang.String getFrom() {
@@ -57,14 +51,31 @@ public class SMSPayload implements java.io.Serializable {
 		this.body = body;
 	}
 
-	public SMSPayload(java.util.List<java.lang.String> to,
-			java.lang.String from, java.lang.Integer validity,
-			java.lang.Boolean priority, java.lang.String body) {
+	public java.lang.Boolean getReplyRequest() {
+		return this.replyRequest;
+	}
+
+	public void setReplyRequest(java.lang.Boolean replyRequest) {
+		this.replyRequest = replyRequest;
+	}
+
+	public java.lang.String getTo() {
+		return this.to;
+	}
+
+	public void setTo(java.lang.String to) {
+		this.to = to;
+	}
+
+	public SMSPayload(java.lang.String to, java.lang.String from,
+			java.lang.Integer validity, java.lang.Boolean priority,
+			java.lang.String body, java.lang.Boolean replyRequest) {
 		this.to = to;
 		this.from = from;
 		this.validity = validity;
 		this.priority = priority;
 		this.body = body;
+		this.replyRequest = replyRequest;
 	}
 
 }

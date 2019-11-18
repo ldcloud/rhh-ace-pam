@@ -1,0 +1,19 @@
+package au.com.leonardo.poc.sms_test;
+
+rule "CodeShare Promotion"
+ruleflow-group "Passenger Notification Rules"
+dialect "mvel"
+when  
+    $evt: Event(attributeName == "codeSharePromotion", hasChanged ==true)
+    $msg: Message(messageText == null)
+    $ffd: FrequentFlyerDetails($ffnum : frequentFlyerNo)
+    $flight: Flight( $tf : thisFlight)
+    Manifest (hasCheckedBaggage == false, frequentFlyer == $ffnum) from $tf.manifest
+      
+then
+    $msg.setMessageText("Hi "+$ffd.getFirstName()+", "+$evt.getOriginator()+" is pleased to have you travel with us to "+$flight.getFlightLegs().get(0).getArrivesAt()+" on flight "+$flight.getFlightNumber()+" and wishes to inform you that booking checked baggage online will be much cheaper than at the counter. Please reply YES if you would like us to send you prices for booking checked baggage online. Enjoy your flight!");
+    $msg.setIsReplyable(true);
+    update($msg);
+    System.out.println("Rule Fired: "+kcontext.getRule().getName());
+    System.out.println($msg.getMessageText());
+end

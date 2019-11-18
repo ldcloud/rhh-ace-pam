@@ -1,8 +1,8 @@
 curl --request POST \
-  --url https://apicast-secure-rhh-ace.bpsaz.ldcloud.com.au/flightEvent \
+  --url https://secure-rhh-ace-rhpam741-exec-kieserver.bpsaz.ldcloud.com.au/services/rest/server/containers/rhh-ace/processes/passengerEvents/instances \
   --header 'authorization: Basic cmhwYW1BZG1pbjpyaHBhbUFkbWluITIz' \
-  --header 'user-key: 68a3a5bab51132a64a33f179233f4bf5' \
-  --cookie 02418cde0172746b1e6d037e2421a015=2a911fd48ef17c889942f72c97e2dd6d \
+  --header 'content-type: application/json' \
+  --cookie c39e1407bdd2233d9eb155178e9cfdb8=694ef74f65231e258e35c185c14de75a \
   --data '{
 	"flight": {
 		"au.com.leonardo.poc.sms_test.Flight": {
@@ -30,10 +30,11 @@ curl --request POST \
 				"passengerCapacity_Busi": 12
 			},
 			"thisFlight": {
+				"gate":"11",
 				"passengerSouls_Econ": 290,
 				"passengerSouls_Busi": 7,
-					"gate":"11",
-				"manifest": [					{
+				"manifest": [
+										{
 						"bookingCode": "XYA43R",
 						"firstName": "phil",
 						"lastName": "ogilvie",
@@ -63,7 +64,8 @@ curl --request POST \
 						"lastName": "white",
 						"frequentFlyer": 987164327,
 						"fareclass": "economy",
-						"seatAllocation": "7A"
+						"seatAllocation": "7A",
+						"requiresAssistance":"unacompaniedMinor"
 					},
 					{
 						"bookingCode": "XY1P08",
@@ -79,10 +81,10 @@ curl --request POST \
 	},
 	"event": {
 		"au.com.leonardo.poc.sms_test.Event": {
-			"attributeName": "EstDepartureTime",
+			"attributeName": "GateNumber",
 			"hasChanged": true,
-			"lastValue": "2019-10-31 12:50:00",
-			"currentValue": "2019-10-31 15:50:00"
+			"lastValue": "11",
+			"currentValue": "17A"
 		}
 	},
 	"mobileNumber": "0000000000",

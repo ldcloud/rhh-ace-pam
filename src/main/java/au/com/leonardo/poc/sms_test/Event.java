@@ -13,6 +13,8 @@ public class Event implements java.io.Serializable {
 	private java.lang.String lastValue;
 	private java.lang.String currentValue;
 
+	private java.lang.String originator;
+
 	public Event() {
 	}
 
@@ -48,12 +50,22 @@ public class Event implements java.io.Serializable {
 		this.currentValue = currentValue;
 	}
 
+	public java.lang.String getOriginator() {
+		return this.originator;
+	}
+
+	public void setOriginator(java.lang.String originator) {
+		this.originator = originator;
+	}
+
 	public Event(java.lang.String attributeName, java.lang.Boolean hasChanged,
-			java.lang.String lastValue, java.lang.String currentValue) {
+			java.lang.String lastValue, java.lang.String currentValue,
+			java.lang.String originator) {
 		this.attributeName = attributeName;
 		this.hasChanged = hasChanged;
 		this.lastValue = lastValue;
 		this.currentValue = currentValue;
+		this.originator = originator;
 	}
 
 }

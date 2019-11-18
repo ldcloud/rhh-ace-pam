@@ -2,6 +2,7 @@ curl --request POST \
   --url https://secure-rhh-ace-rhpam741-exec-kieserver.bpsaz.ldcloud.com.au/services/rest/server/containers/rhh-ace/processes/passengerEvents/instances \
   --header 'authorization: Basic cmhwYW1BZG1pbjpyaHBhbUFkbWluITIz' \
   --header 'content-type: application/json' \
+  --cookie c39e1407bdd2233d9eb155178e9cfdb8=694ef74f65231e258e35c185c14de75a \
   --data '{
 	"flight": {
 		"au.com.leonardo.poc.sms_test.Flight": {
@@ -84,7 +85,7 @@ curl --request POST \
 			"currentValue": "2019-10-31 15:50:00"
 		}
 	},
-	"mobileNumber": "0450100890",
+	"mobileNumber": "0000000000",
 	"MMSContent": {
 		"au.com.leonardo.poc.sms_test.MMSContent": {
 			"type": "image/gif",
